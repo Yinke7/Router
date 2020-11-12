@@ -1,4 +1,4 @@
-#coding:utf-8
+# -*- coding: UTF-8 -*-
 
 import base64
 
@@ -55,7 +55,7 @@ global requestheader
 if __name__ == '__main__':
 
     print ("#######################################################")
-    print ("#                Routing brute force tool             #")
+    print ("#           Routing brute force tool                  #")
     print ("#######################################################")
 
     passwordlist = []
@@ -74,8 +74,8 @@ if __name__ == '__main__':
     print target
     fp = open("user.txt")
 
-    #fp2=open("passwd.txt")
-    fp2 = open("temp.txt")
+    fp2 = open("passwd.txt")
+    #fp2 = open("temp.txt")
 
     for user in fp.readlines():
 
