@@ -1,1 +1,1 @@
-record
+this is Linksys Router 
